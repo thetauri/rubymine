@@ -6,7 +6,7 @@ module Rubymine
         @base = options[:base] || raise "Base required"
         @chest = options[:chest] || raise "Chest required"
         materials = options[:materials] || raise "Materials required"
-        @materials = materials.split(" ").uniq.compact.map(&:to_sym)
+        @materials = materials.downcase.gsub(/[^a-z_]/, " ").split(" ").uniq.compact.map(&:to_sym)
       end
 
       def process_vehicle_move(event)
@@ -27,7 +27,7 @@ module Rubymine
           chest = find_and_return(:chest, base)
           sign = find_and_return(:wall_sign, base)
 
-          if chest && sign && sign.get_state_get_line(0) == "[Transceiver]"
+          if chest && sign && sign.get_state_get_line(0).downcase == "[transceiver]"
             new {base: base, chest: chest, materials: [sign.get_state.get_line(1),sign.get_state.get_line(2),sign.get_state.get_line(3)].join(" ")}
           end
         end
