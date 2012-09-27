@@ -10,6 +10,6 @@ class RubyminePlugin
     @plugin.setup self
     @plugin.broadcast "Loaded 'Rubymine' plugin"
 
-    @storage_cart_system = Rubymine::StorageCartSystem.new(self)
+    @storage_cart_system = Rubymine::StorageCartSystem.new
   end
 end
