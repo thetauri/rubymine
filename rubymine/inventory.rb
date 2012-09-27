@@ -12,7 +12,7 @@ module Rubymine
         end
         overflow.each { |item_stack| inventory.add_item(item_stack) }
       rescue => e
-        raise "Oopsie?"
+        plugin.broadcast "Oopsie?", :red
       end
 
       private

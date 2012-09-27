@@ -1,7 +1,6 @@
 module Rubymine
   class StorageCartSystem
-    def initialize(plugin)
-      @plugin = plugin
+    def initialize
 
       # Register vehicle move event
       plugin.event(:vehicle_move) do |event|
@@ -22,17 +21,11 @@ module Rubymine
     end
 
     def command(player, arguments)
-      broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
-    end
-
-    private
-
-    def debug(text)
-      plugin.broadcast "StorageCartSystem: #{text}"
+      plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
     end
 
     def plugin
-      @plugin
+      @plugin ||= Plugin.new
     end
   end
 end

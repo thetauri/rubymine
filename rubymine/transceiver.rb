@@ -1,6 +1,5 @@
 module Rubymine
   class Transceiver < SystemBlock
-
     class << self
       def initialize(options)
         @base = options[:base] || raise "Base required"
@@ -12,7 +11,6 @@ module Rubymine
       def process_vehicle_move(event)
         vehicle = event.get_vehicle
         if vehicle.respond_to?(:get_inventory)
-
           if @base.is_block_powered?
             Inventory.move_items(vehicle.get_inventory, chest.get_state.get_inventory, @materials)
           else

@@ -17,6 +17,10 @@ module RubyMine
           block.block_at(:west)
         end
       end
+
+      def plugin
+        @plugin ||= Plugin.new
+      end
     end
   end
 end
