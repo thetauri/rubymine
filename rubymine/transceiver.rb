@@ -3,26 +3,32 @@ module Rubymine
 
     class << self
       def initialize(options)
+        @base = options[:base] || raise "Base required"
         @chest = options[:chest] || raise "Chest required"
-        @sign = options[:sign] || raise "Sign required"
+        materials = options[:materials] || raise "Materials required"
+        @materials = materials.split(" ").uniq.compact.map(&:to_sym)
       end
 
       def process_vehicle_move(event)
-        @vehicle = event.get_vehicle
-        if @vehicle.respond_to?(:get_inventory)
+        vehicle = event.get_vehicle
+        if vehicle.respond_to?(:get_inventory)
 
-            material = sign.get_state.get_line(0).to_sym
-            Inventory.move_items(cart.get_inventory, chest.get_state.get_inventory, material)
+          if @base.is_block_powered?
+            Inventory.move_items(vehicle.get_inventory, chest.get_state.get_inventory, @materials)
+          else
+            Inventory.move_items(chest.get_state.get_inventory, vehicle.get_inventory, @materials)
+          end
         end
       end
 
       def me?(block)
         base = block.block_at(:down)  
         if base.is?(:iron_block)
-          chest = find_and_return(:chest,base)
-          sign = find_and_return(:wall_sign,base)
-          if chest && sign
-            new {chest: chest, sign: sign}
+          chest = find_and_return(:chest, base)
+          sign = find_and_return(:wall_sign, base)
+
+          if chest && sign && sign.get_state_get_line(0) == "[Transceiver]"
+            new {base: base, chest: chest, materials: [sign.get_state.get_line(1),sign.get_state.get_line(2),sign.get_state.get_line(3)].join(" ")}
           end
         end
         false

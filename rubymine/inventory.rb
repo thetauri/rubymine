@@ -1,6 +1,5 @@
 module Rubymine
   class Inventory
-
     class << self
 
       def move_items(from, to, materials = :all)
