@@ -1,3 +1,6 @@
+require_relative 'rubymine/transceiver'
+require_relative 'rubymine/storage_cart_system'
+
 class RubyminePlugin
   include Purugin::Plugin, Purugin::Colors
   description 'Rubymine', 0.1
@@ -5,8 +8,7 @@ class RubyminePlugin
    def on_enable
     broadcast "Loaded 'Rubymine' plugin"
 
-    @storage_cart_system = StorageCartSystem.new(self)
-
+    @storage_cart_system = Rubymine::StorageCartSystem.new(self)
 
     # Some legacy build scripts
     public_command('rubymine', 'magic stuff', '/rubymine ...') do |me, *args|
